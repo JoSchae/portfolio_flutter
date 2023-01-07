@@ -1,0 +1,65 @@
+{
+    "projects": [
+        {
+            "projectTitle": "title",
+            "skills": [
+                {
+                    "name": "Java",
+                    "proficiency":"good",
+                    "experience": 4
+                }
+            ],
+            "description": "description",
+            "company": "company_name",
+            "roles": ["frontend"]
+        },
+        {
+            "projectTitle": "Entwicklung & Deployment einer Seamless-Thankspage",
+            "skills": [
+                {
+                    "name": "Angular",
+                    "proficiency":"expert",
+                    "experience": 5
+                },
+                {
+                    "name": "Typescript",
+                    "proficiency":"expert",
+                    "experience": 5
+                },
+                {
+                    "name": "NestJS",
+                    "proficiency":"very good",
+                    "experience": 3
+                },
+                {
+                    "name": "HTML",
+                    "proficiency":"expert",
+                    "experience": 5
+                },
+                {
+                    "name": "CSS",
+                    "proficiency":"expert",
+                    "experience": 5
+                },
+                {
+                    "name": "Jest",
+                    "proficiency":"good",
+                    "experience": 3
+                },
+                {
+                    "name": "Cypress",
+                    "proficiency":"good",
+                    "experience": 2
+                },
+                {
+                    "name": "Docker",
+                    "proficiency":"good",
+                    "experience": 3
+                }
+            ],
+            "description": "Neuentwicklung der Sales-Page für Kreditvergleiche mit aktuellem Angular-Framework und Beratung zu UX.\n\nImplementierung der verschiedenen Filter/Sortier-Optionen, Angebots-Anzeigen, AB-Test-Fähigkeiten, responsivem Verhalten, Third-Party-Schnittstellen, Kreditdetails. Alles auf den individuellen Kunden optimiert, sowohl vom Produkt, als auch vom Design.",
+            "company": "CHECK24 Kredite",
+            "roles": ["Frontend", "Middleware", "Architekt", "UX-Ansprechpartner"]
+        }
+    ]
+}
