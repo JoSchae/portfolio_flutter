@@ -5,12 +5,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:portfolio_flutter/carousel.dart';
+import 'package:portfolio_flutter/contact.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:portfolio_flutter/carousel.dart';
 // import 'package:portfolio_flutter/footer.dart';
 import 'package:portfolio_flutter/interfaces/projects.dart';
 import 'package:portfolio_flutter/projects.dart';
 import 'package:portfolio_flutter/summary.dart';
+import 'package:portfolio_flutter/util/util.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 // import 'package:carousel_slider/carousel_slider.dart';
 // import 'package:float_column/float_column.dart';
@@ -53,8 +55,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   final projectsPageKey = GlobalKey();
   final contactPageKey = GlobalKey();
 
-  final formKey = GlobalKey<FormState>();
-
   String title = 'Summary';
 
   final double customToolbarHeight = 60;
@@ -64,8 +64,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   final RegExp emailRegex = RegExp('');
 
   Future<Projects> readJson() async {
-    Map<String, dynamic> data =
-        json.decode(await rootBundle.loadString('json/projects.json'));
+    Map<String, dynamic> data = json.decode(await rootBundle.loadString('json/projects.json'));
     return Projects.fromJson(data);
   }
 
@@ -90,11 +89,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           child: Container(
                         width: MediaQuery.of(context).size.width * 0.4,
                         height: MediaQuery.of(context).size.height * 0.4,
-                        decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(10)),
-                        constraints:
-                            const BoxConstraints(minWidth: 260, minHeight: 260),
+                        decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(10)),
+                        constraints: const BoxConstraints(minWidth: 260, minHeight: 260),
                         child: Center(
                           child: ElevatedButton(
                               onPressed: () => {
@@ -109,12 +105,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     ),
                   ),
                   SliverAppBar(
-                    title: Text(title, style: TextStyle(fontSize: 26)),
+                    title: Text(title, style: const TextStyle(fontSize: 26)),
                     toolbarHeight: customToolbarHeight,
                     snap: false,
                     floating: false,
                     pinned: true,
-                    actions: MediaQuery.of(context).size.width > 480
+                    actions: !Utils.isMobile()
                         ? [
                             Padding(
                               padding: const EdgeInsets.all(15.0),
@@ -163,9 +159,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                       setState(() => title = 'Summary'),
                                     },
                                 icon: const Icon(Icons.account_box_rounded,
-                                    color: Colors.green,
-                                    size: 24.0,
-                                    semanticLabel: 'Text to announce')),
+                                    color: Colors.green, size: 24.0, semanticLabel: 'Text to announce')),
                             IconButton(
                                 onPressed: () => {
                                       Scrollable.ensureVisible(
@@ -175,9 +169,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                       setState(() => title = 'Projects')
                                     },
                                 icon: const Icon(Icons.co_present_rounded,
-                                    color: Colors.green,
-                                    size: 24.0,
-                                    semanticLabel: 'Text to announce')),
+                                    color: Colors.green, size: 24.0, semanticLabel: 'Text to announce')),
                             IconButton(
                                 onPressed: () => {
                                       Scrollable.ensureVisible(
@@ -187,88 +179,33 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                       setState(() => title = 'Contact')
                                     },
                                 icon: const Icon(Icons.mail_outline_rounded,
-                                    color: Colors.green,
-                                    size: 24.0,
-                                    semanticLabel: 'Text to announce'))
+                                    color: Colors.green, size: 24.0, semanticLabel: 'Text to announce'))
                           ],
                   ),
                   SliverToBoxAdapter(
                       // key: const Key('summaryPageBox'),
                       key: summaryPageKey,
-                      child: MySummary(
-                          key: const Key('summary-key'),
-                          customToolbarHeight: customToolbarHeight)),
+                      child: MySummary(key: const Key('summary-key'), customToolbarHeight: customToolbarHeight)),
                   SliverToBoxAdapter(
                     child: Container(
                       key: projectsPageKey,
                       color: Colors.red,
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height -
-                          customToolbarHeight,
-                      child: Center(
+                      //   height: MediaQuery.of(context).size.height - customToolbarHeight,
+                      child: const Center(
                         child: Carousel(),
                       ),
                     ),
                   ),
                   SliverToBoxAdapter(
                     child: Container(
-                      key: contactPageKey,
-                      color: Colors.yellow,
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height -
-                          customToolbarHeight,
-                      child: Center(
-                          child: Container(
-                        height: Adaptive.h(50),
-                        width: Adaptive.w(80),
-                        color: Colors.red,
-                        constraints: const BoxConstraints(
-                            minWidth: 260, maxWidth: 400, maxHeight: 400),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Form(
-                            key: formKey,
-                            child: Column(children: [
-                              // TODO: TextFormField researchm & submit & database-integration & automatic email generation
-                              TextFormField(
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  hintText: 'Vorname Nachname',
-                                ),
-                              ),
-                              TextFormField(
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  hintText: 'Telefonnummer',
-                                ),
-                              ),
-                              TextFormField(
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'E-Mail Addresse',
-                                  ),
-                                  validator: ((String? email) {
-                                    if (email != null) {
-                                      return email.isNotEmpty &&
-                                              EmailValidator.validate(email)
-                                          ? null
-                                          : 'This E-Mail isn\'t valid';
-                                    } else {
-                                      return 'Please enter your E-Mail';
-                                    }
-                                  })),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: ElevatedButton(
-                                    onPressed: () =>
-                                        formKey.currentState!.validate(),
-                                    child: Text('submit')),
-                              )
-                            ]),
-                          ),
-                        ),
-                      )),
-                    ),
+                        key: contactPageKey,
+                        color: Colors.yellow,
+                        width: MediaQuery.of(context).size.width,
+                        // height: MediaQuery.of(context).size.height - customToolbarHeight,
+                        child: const Center(
+                          child: Contacts(),
+                        )),
                   )
                 ],
               );

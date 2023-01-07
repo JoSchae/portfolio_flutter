@@ -35,8 +35,7 @@ class _MyHexagonState extends State<MyHexagon> {
   @override
   void initState() {
     super.initState();
-    animationEventSubscription =
-        widget.animationController.stream.asBroadcastStream().listen((event) {
+    animationEventSubscription = widget.animationController.stream.asBroadcastStream().listen((event) {
       if (event == EAnimation.startAnimation) {
         updateCardRotation();
       }
@@ -61,9 +60,7 @@ class _MyHexagonState extends State<MyHexagon> {
     return Transform(
       transform: Matrix4.identity()
         ..setEntry(3, 2, 0)
-        ..rotateY(_cardRotation < 0.5
-            ? _cardRotation * pi
-            : (1 + _cardRotation) * pi),
+        ..rotateY(_cardRotation < 0.5 ? _cardRotation * pi : (1 + _cardRotation) * pi),
       alignment: FractionalOffset.center,
       child: ClipPath(
         clipper: MyPolygon(),
@@ -71,15 +68,16 @@ class _MyHexagonState extends State<MyHexagon> {
             width: Adaptive.w(widget.size),
             height: Adaptive.w(widget.size),
             color: widget.backgroundColor,
-            constraints: const BoxConstraints(minWidth: 50, minHeight: 50),
+            constraints: const BoxConstraints(minWidth: 120, minHeight: 120),
             child: _cardRotation < 0.5
-                ? Icon(widget.iconData ?? Icons.alarm,
-                    color: widget.iconColor,
-                    size: 50,
-                    semanticLabel: 'Text to announce')
-                : Image.asset(
-                    '/images/IMG-20170107-WA0004.jpg',
-                    fit: BoxFit.cover,
+                ? Icon(widget.iconData ?? Icons.alarm, color: widget.iconColor, size: 50, semanticLabel: 'Text to announce')
+                : IconButton(
+                    onPressed: () => print('clicked'),
+                    padding: EdgeInsets.zero,
+                    icon: Image.asset(
+                      '/images/IMG-20170107-WA0004.jpg',
+                      fit: BoxFit.cover,
+                    ),
                   )),
       ),
     );
